@@ -1,0 +1,318 @@
+async function fetchJson(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+  return response.json();
+}
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.textContent = value;
+  }
+}
+
+function renderList(id, title, items) {
+  const host = document.getElementById(id);
+  if (!host) {
+    return;
+  }
+
+  host.innerHTML = "";
+
+  const heading = document.createElement("p");
+  heading.innerHTML = `<strong>${title}:</strong>`;
+  host.appendChild(heading);
+
+  const list = document.createElement("ul");
+  for (const item of items) {
+    const entry = document.createElement("li");
+    entry.textContent = item;
+    list.appendChild(entry);
+  }
+  host.appendChild(list);
+}
+
+function renderVariablesTable(id, variables) {
+  const host = document.getElementById(id);
+  if (!host) {
+    return;
+  }
+
+  const rows = variables
+    .map(
+      (variable) =>
+        `<tr><td><strong>${variable.symbol}</strong></td><td>${variable.meaning}</td></tr>`,
+    )
+    .join("");
+
+  host.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <caption class="muted">Model variables</caption>
+        <thead>
+          <tr><th scope="col">Symbol</th><th scope="col">Meaning</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function formatNumber(value) {
+  return Number.parseFloat(value).toFixed(2);
+}
+
+function createPolyline(points, color, width) {
+  return `<polyline fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" points="${points}" />`;
+}
+
+function setDownloadEnabled(buttonId, enabled) {
+  const button = document.getElementById(buttonId);
+  if (!button) {
+    return;
+  }
+  button.disabled = !enabled;
+}
+
+function renderChart(svgId, series, xLabel, yLabel) {
+  const svg = document.getElementById(svgId);
+  if (!svg || !series.length) {
+    return;
+  }
+
+  const width = 640;
+  const height = 260;
+  const padding = { top: 16, right: 20, bottom: 34, left: 48 };
+  const xs = series.flatMap((entry) => entry.x);
+  const ys = series.flatMap((entry) => entry.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const xRange = maxX - minX || 1;
+  const yRange = maxY - minY || 1;
+
+  const toPointString = (xValues, yValues) =>
+    xValues
+      .map((x, index) => {
+        const y = yValues[index];
+        const mappedX =
+          padding.left + ((x - minX) / xRange) * (width - padding.left - padding.right);
+        const mappedY =
+          height -
+          padding.bottom -
+          ((y - minY) / yRange) * (height - padding.top - padding.bottom);
+        return `${mappedX.toFixed(2)},${mappedY.toFixed(2)}`;
+      })
+      .join(" ");
+
+  const gridLines = Array.from({ length: 5 }, (_, index) => {
+    const y = padding.top + (index / 4) * (height - padding.top - padding.bottom);
+    return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(31, 35, 38, 0.08)" stroke-width="1" />`;
+  }).join("");
+
+  const lines = series
+    .map((entry) => createPolyline(toPointString(entry.x, entry.y), entry.color, entry.width))
+    .join("");
+
+  svg.innerHTML = `
+    <rect x="0" y="0" width="${width}" height="${height}" rx="18" fill="transparent"></rect>
+    ${gridLines}
+    <line x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
+    <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
+    ${lines}
+    <text x="${width / 2}" y="${height - 8}" text-anchor="middle" fill="#5b6468" font-size="12">${xLabel}</text>
+    <text x="16" y="${height / 2}" text-anchor="middle" fill="#5b6468" font-size="12" transform="rotate(-90 16 ${height / 2})">${yLabel}</text>
+    <text x="${padding.left}" y="${padding.top - 4}" fill="#5b6468" font-size="11">${formatNumber(maxY)}</text>
+    <text x="${padding.left}" y="${height - padding.bottom + 14}" fill="#5b6468" font-size="11">${formatNumber(minY)}</text>
+  `;
+}
+
+async function downloadChartAsPng(chartId, filename) {
+  const svg = document.getElementById(chartId);
+  if (!svg || !svg.innerHTML.trim()) {
+    throw new Error("Chart is not ready");
+  }
+
+  const serialized = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([serialized], { type: "image/svg+xml;charset=utf-8" });
+  const objectUrl = URL.createObjectURL(blob);
+
+  try {
+    const image = new Image();
+    image.decoding = "async";
+
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = objectUrl;
+    });
+
+    const viewBox = svg.viewBox.baseVal;
+    const width = viewBox.width || svg.clientWidth || 640;
+    const height = viewBox.height || svg.clientHeight || 260;
+    const canvas = document.createElement("canvas");
+    const scale = 2;
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+
+    const context = canvas.getContext("2d");
+    if (!context) {
+      throw new Error("Canvas context unavailable");
+    }
+
+    context.fillStyle = "#fffaf4";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.scale(scale, scale);
+    context.drawImage(image, 0, 0, width, height);
+
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+async function loadLaplaceContent() {
+  const data = await fetchJson("/api/applications/laplace");
+
+  setText("laplace-description", data.description);
+  setText("laplace-learning-objective", data.learning_objective);
+  setText("laplace-equation", data.equation);
+  setText("laplace-why", data.why_laplace);
+  setText("laplace-interpretation", data.interpretation);
+  setText("laplace-assignment", data.assignment_link);
+  renderVariablesTable("laplace-variables", data.variables);
+  renderList("laplace-use-cases", "Use cases", data.use_cases);
+  renderList("laplace-limitations", "Limitations", data.limitations);
+}
+
+async function loadFourierContent() {
+  const data = await fetchJson("/api/applications/fourier");
+
+  setText("fourier-description", data.description);
+  setText("fourier-learning-objective", data.learning_objective);
+  setText("fourier-equation", data.series_equation);
+  setText("fourier-concept", data.concept);
+  setText("fourier-interpretation", data.interpretation);
+  setText("fourier-assignment", data.assignment_link);
+  renderList("fourier-steps", "Compression steps", data.steps);
+  renderList("fourier-use-cases", "Use cases", data.use_cases);
+  renderList("fourier-limitations", "Limitations", data.limitations);
+}
+
+async function loadLaplaceSimulation() {
+  const form = document.getElementById("laplace-form");
+  const status = document.getElementById("laplace-status");
+  const params = new URLSearchParams(new FormData(form));
+  status.textContent = "Running simulation...";
+
+  try {
+    const data = await fetchJson(`/api/applications/laplace/simulate?${params.toString()}`);
+    status.textContent =
+      "Simulation ready. Compare displacement against the applied forcing signal.";
+
+    renderChart(
+      "laplace-chart",
+      [
+        { x: data.t, y: data.displacement, color: "#0d6b78", width: 3 },
+        { x: data.t, y: data.forcing, color: "#4f8d6f", width: 2.25 },
+      ],
+      "Time (s)",
+      "Response",
+    );
+    setDownloadEnabled("download-laplace", true);
+  } catch (error) {
+    status.textContent =
+      "Simulation could not be loaded. Check the parameter values and try again.";
+    setDownloadEnabled("download-laplace", false);
+  }
+}
+
+async function loadFourierSignal() {
+  const form = document.getElementById("fourier-form");
+  const status = document.getElementById("fourier-status");
+  const params = new URLSearchParams(new FormData(form));
+  status.textContent = "Building approximation...";
+
+  try {
+    const data = await fetchJson(`/api/applications/fourier/signal?${params.toString()}`);
+    status.textContent = `Approximation updated with ${data.terms_used} Fourier terms.`;
+
+    renderChart(
+      "fourier-chart",
+      [
+        { x: data.x, y: data.signal, color: "#0d6b78", width: 3 },
+        { x: data.x, y: data.approximation, color: "#b74d27", width: 2.25 },
+      ],
+      "x (radians)",
+      "Amplitude",
+    );
+    setDownloadEnabled("download-fourier", true);
+  } catch (error) {
+    status.textContent =
+      "Approximation could not be loaded. Enter a positive number of terms and try again.";
+    setDownloadEnabled("download-fourier", false);
+  }
+}
+
+function bindForms() {
+  document.getElementById("laplace-form")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    loadLaplaceSimulation();
+  });
+
+  document.getElementById("fourier-form")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    loadFourierSignal();
+  });
+
+  document.querySelectorAll(".chart-download").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const chartId = button.dataset.chartId;
+      const filename = button.dataset.filename;
+
+      if (!chartId || !filename) {
+        return;
+      }
+
+      const previousText = button.textContent;
+      button.disabled = true;
+      button.textContent = "Preparing Download...";
+
+      try {
+        await downloadChartAsPng(chartId, filename);
+      } catch (error) {
+        const statusId = chartId === "laplace-chart" ? "laplace-status" : "fourier-status";
+        setText(statusId, "Download failed. Re-render the graph and try again.");
+      } finally {
+        button.textContent = previousText;
+        const svg = document.getElementById(chartId);
+        button.disabled = !svg || !svg.innerHTML.trim();
+      }
+    });
+  });
+}
+
+async function initializePage() {
+  bindForms();
+
+  try {
+    await Promise.all([loadLaplaceContent(), loadFourierContent()]);
+  } catch (error) {
+    const message = "Some explanatory content could not be loaded from the API.";
+    setText("laplace-description", message);
+    setText("fourier-description", message);
+  }
+
+  await Promise.allSettled([loadLaplaceSimulation(), loadFourierSignal()]);
+}
+
+initializePage();

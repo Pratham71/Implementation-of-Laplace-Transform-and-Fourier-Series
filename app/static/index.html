@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Implementation of Laplace Transform and Fourier Series</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">Mathematics III</p>
+        <h1>Implementation of Laplace Transform and Fourier Series</h1>
+        <p class="hero__lede">
+          Explore how Laplace transforms model vibrations and how Fourier series
+          explain audio compression through interactive visualizations.
+        </p>
+        <div class="student-meta" aria-label="Student details">
+          <p><strong>Name:</strong> Pratham Nagpal</p>
+          <p><strong>ID:</strong> 2024A7PS0071U</p>
+          <p><strong>Section:</strong> L4</p>
+        </div>
+      </div>
+      <nav class="hero__nav" aria-label="Application sections">
+        <a href="#laplace">Laplace Application</a>
+        <a href="#fourier">Fourier Application</a>
+        <a href="/docs">API Docs</a>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article id="laplace" class="panel panel--laplace" aria-labelledby="laplace-title">
+        <div class="panel__header">
+          <p class="panel__label">Application 1</p>
+          <h2 id="laplace-title">Spring-Mass-Damper System</h2>
+          <p id="laplace-description" class="panel__summary">
+            Loading Laplace transform explanation...
+          </p>
+        </div>
+
+        <div class="panel__content two-column">
+          <section class="card">
+            <h3>Mathematical Model</h3>
+            <p id="laplace-learning-objective" class="muted"></p>
+            <pre id="laplace-equation" class="equation">m y'' + c y' + k y = F(t)</pre>
+            <div id="laplace-variables"></div>
+            <p><strong>Why Laplace helps:</strong> <span id="laplace-why"></span></p>
+            <p><strong>Interpretation:</strong> <span id="laplace-interpretation"></span></p>
+            <div id="laplace-use-cases"></div>
+            <p><strong>Assignment relevance:</strong> <span id="laplace-assignment"></span></p>
+            <div id="laplace-limitations"></div>
+          </section>
+
+          <section class="card">
+            <div class="card__heading">
+              <h3>Simulation</h3>
+              <p>Adjust the physical parameters and regenerate the motion curve.</p>
+            </div>
+            <form id="laplace-form" class="controls">
+              <label>
+                Mass (m)
+                <input name="m" type="number" min="0.1" step="0.1" value="1.0">
+              </label>
+              <label>
+                Damping (c)
+                <input name="c" type="number" min="0" step="0.05" value="0.45">
+              </label>
+              <label>
+                Spring constant (k)
+                <input name="k" type="number" min="0.1" step="0.1" value="4.0">
+              </label>
+              <label>
+                Force amplitude
+                <input name="force_amplitude" type="number" min="0" step="0.1" value="1.0">
+              </label>
+              <button type="submit">Run Simulation</button>
+            </form>
+            <p id="laplace-status" class="status" aria-live="polite"></p>
+            <div class="chart-card">
+              <svg id="laplace-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Laplace displacement chart"></svg>
+              <div class="legend" aria-hidden="true">
+                <span><i class="swatch swatch--primary"></i> Displacement</span>
+                <span><i class="swatch swatch--secondary"></i> Forcing</span>
+              </div>
+              <div class="chart-actions">
+                <button
+                  type="button"
+                  id="download-laplace"
+                  class="chart-download"
+                  data-chart-id="laplace-chart"
+                  data-filename="laplace-graph.png"
+                  disabled
+                >
+                  Download Laplace Graph
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article id="fourier" class="panel panel--fourier" aria-labelledby="fourier-title">
+        <div class="panel__header">
+          <p class="panel__label">Application 2</p>
+          <h2 id="fourier-title">Audio Compression</h2>
+          <p id="fourier-description" class="panel__summary">
+            Loading Fourier series explanation...
+          </p>
+        </div>
+
+        <div class="panel__content two-column">
+          <section class="card">
+            <h3>Signal Decomposition</h3>
+            <p id="fourier-learning-objective" class="muted"></p>
+            <pre id="fourier-equation" class="equation">f(t) = a0 + sum(an cos(nt) + bn sin(nt))</pre>
+            <p><strong>Core concept:</strong> <span id="fourier-concept"></span></p>
+            <div id="fourier-steps"></div>
+            <p><strong>Interpretation:</strong> <span id="fourier-interpretation"></span></p>
+            <div id="fourier-use-cases"></div>
+            <p><strong>Assignment relevance:</strong> <span id="fourier-assignment"></span></p>
+            <div id="fourier-limitations"></div>
+          </section>
+
+          <section class="card">
+            <div class="card__heading">
+              <h3>Signal Approximation</h3>
+              <p>Increase the number of retained terms to see how the waveform improves.</p>
+            </div>
+            <form id="fourier-form" class="controls controls--inline">
+              <label>
+                Terms
+                <input name="terms" type="number" min="1" max="100" step="1" value="10">
+              </label>
+              <button type="submit">Update Approximation</button>
+            </form>
+            <p id="fourier-status" class="status" aria-live="polite"></p>
+            <div class="chart-card">
+              <svg id="fourier-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Fourier approximation chart"></svg>
+              <div class="legend" aria-hidden="true">
+                <span><i class="swatch swatch--primary"></i> Original signal</span>
+                <span><i class="swatch swatch--accent"></i> Fourier approximation</span>
+              </div>
+              <div class="chart-actions">
+                <button
+                  type="button"
+                  id="download-fourier"
+                  class="chart-download"
+                  data-chart-id="fourier-chart"
+                  data-filename="fourier-graph.png"
+                  disabled
+                >
+                  Download Fourier Graph
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>
