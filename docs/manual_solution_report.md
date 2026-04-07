@@ -334,7 +334,9 @@ In real systems, the compression process is more advanced than a simple Fourier 
 ### Axis And Index Meaning
 - Laplace graph: the x-axis is time `t` in seconds, and the y-axis is the system response value. Each plotted index is one sampled time point.
 - Fourier graph: the x-axis is `x` in radians from `-pi` to `pi`, and the y-axis is signal amplitude. Each plotted index is one sampled `x` point.
-- The downloaded graph contains axis labels so it can be used directly in the report.
+- The downloaded graph contains axis labels and a visible legend so it can be used directly in the report.
+- Laplace legend: dark teal means displacement `y(t)`, and green means applied force `F(t)`.
+- Fourier legend: dark teal means original signal `f(x)=x`, and orange means Fourier approximation.
 
 ## Conclusion
 This assignment showed how two important mathematical tools are used in practical systems.

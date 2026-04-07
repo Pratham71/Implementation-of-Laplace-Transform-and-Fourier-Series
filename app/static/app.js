@@ -132,6 +132,30 @@ function createPolyline(points, color, width) {
   return `<polyline fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" points="${points}" />`;
 }
 
+function escapeSvgText(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function createLegend(series) {
+  const itemWidth = 210;
+  return series
+    .map((entry, index) => {
+      const x = 48 + index * itemWidth;
+      const label = escapeSvgText(entry.label ?? `Series ${index + 1}`);
+
+      return `
+        <g transform="translate(${x} 15)">
+          <line x1="0" y1="0" x2="28" y2="0" stroke="${entry.color}" stroke-width="${entry.width}" stroke-linecap="round" />
+          <text x="36" y="4" fill="#3f484c" font-size="12" font-weight="700">${label}</text>
+        </g>
+      `;
+    })
+    .join("");
+}
+
 function setDownloadEnabled(buttonId, enabled) {
   const button = document.getElementById(buttonId);
   if (!button) {
@@ -148,7 +172,7 @@ function renderChart(svgId, series, xLabel, yLabel, guideText) {
 
   const width = 640;
   const height = 260;
-  const padding = { top: 16, right: 20, bottom: 34, left: 48 };
+  const padding = { top: 44, right: 20, bottom: 34, left: 48 };
   const xs = series.flatMap((entry) => entry.x);
   const ys = series.flatMap((entry) => entry.y);
   const minX = Math.min(...xs);
@@ -180,18 +204,23 @@ function renderChart(svgId, series, xLabel, yLabel, guideText) {
   const lines = series
     .map((entry) => createPolyline(toPointString(entry.x, entry.y), entry.color, entry.width))
     .join("");
+  const legend = createLegend(series);
+  const safeXLabel = escapeSvgText(xLabel);
+  const safeYLabel = escapeSvgText(yLabel);
+  const safeGuideText = escapeSvgText(guideText);
 
   svg.innerHTML = `
     <rect x="0" y="0" width="${width}" height="${height}" rx="18" fill="transparent"></rect>
+    ${legend}
     ${gridLines}
     <line x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
     <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
     ${lines}
-    <text x="${width / 2}" y="${height - 20}" text-anchor="middle" fill="#5b6468" font-size="12">${xLabel}</text>
-    <text x="16" y="${height / 2}" text-anchor="middle" fill="#5b6468" font-size="12" transform="rotate(-90 16 ${height / 2})">${yLabel}</text>
+    <text x="${width / 2}" y="${height - 20}" text-anchor="middle" fill="#5b6468" font-size="12">${safeXLabel}</text>
+    <text x="16" y="${height / 2}" text-anchor="middle" fill="#5b6468" font-size="12" transform="rotate(-90 16 ${height / 2})">${safeYLabel}</text>
     <text x="${padding.left}" y="${padding.top - 4}" fill="#5b6468" font-size="11">${formatNumber(maxY)}</text>
     <text x="${padding.left}" y="${height - padding.bottom + 14}" fill="#5b6468" font-size="11">${formatNumber(minY)}</text>
-    <text x="${width / 2}" y="${height - 7}" text-anchor="middle" fill="#5b6468" font-size="10">${guideText}</text>
+    <text x="${width / 2}" y="${height - 7}" text-anchor="middle" fill="#5b6468" font-size="10">${safeGuideText}</text>
   `;
 }
 
@@ -287,8 +316,8 @@ async function loadLaplaceSimulation() {
     renderChart(
       "laplace-chart",
       [
-        { x: data.t, y: data.displacement, color: "#0d6b78", width: 3 },
-        { x: data.t, y: data.forcing, color: "#4f8d6f", width: 2.25 },
+        { label: "Displacement y(t)", x: data.t, y: data.displacement, color: "#0d6b78", width: 3 },
+        { label: "Applied force F(t)", x: data.t, y: data.forcing, color: "#4f8d6f", width: 2.25 },
       ],
       "Time (s)",
       "Response",
@@ -336,8 +365,8 @@ async function loadFourierSignal() {
     renderChart(
       "fourier-chart",
       [
-        { x: data.x, y: data.signal, color: "#0d6b78", width: 3 },
-        { x: data.x, y: data.approximation, color: "#b74d27", width: 2.25 },
+        { label: "Original signal f(x)=x", x: data.x, y: data.signal, color: "#0d6b78", width: 3 },
+        { label: "Fourier approximation", x: data.x, y: data.approximation, color: "#b74d27", width: 2.25 },
       ],
       "x (radians)",
       "Amplitude",

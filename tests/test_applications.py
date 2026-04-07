@@ -29,8 +29,18 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "Axis Guide" in response.text
     assert "Laplace x-axis: time t in seconds" in response.text
     assert "Fourier x-axis: x values in radians" in response.text
-    assert "/static/app.js?v=axis-guide" in response.text
+    assert "/static/app.js?v=legend" in response.text
     assert response.headers["cache-control"] == "no-store"
+
+
+def test_chart_renderer_includes_downloadable_wave_legends() -> None:
+    response = client.get("/static/app.js")
+
+    assert response.status_code == 200
+    assert "Displacement y(t)" in response.text
+    assert "Applied force F(t)" in response.text
+    assert "Original signal f(x)=x" in response.text
+    assert "Fourier approximation" in response.text
 
 
 def test_laplace_application_returns_learning_content() -> None:

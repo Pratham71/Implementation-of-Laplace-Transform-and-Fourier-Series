@@ -348,7 +348,7 @@ For the Laplace graph, the x-axis represents time `t` in seconds. The y-axis rep
 
 For the Fourier graph, the x-axis represents sampled `x` values in radians from `-pi` to `pi`. The y-axis represents signal amplitude for the original function and the Fourier approximation. Each plotted index corresponds to one sampled `x` value returned by the backend.
 
-The downloaded graph image includes axis labels and a short guide line so that the saved graph is understandable when inserted into the final report.
+The downloaded graph image includes axis labels, a short guide line, and a visible color legend so that the saved graph is understandable when inserted into the final report. In the Laplace graph, the dark teal curve is the displacement `y(t)` and the green curve is the applied force `F(t)`. In the Fourier graph, the dark teal curve is the original signal `f(x)=x` and the orange curve is the Fourier approximation.
 
 ## Error Analysis Summary
 The final application includes error analysis directly in the frontend. For the Laplace simulation, the app reports solver status, tolerance values, maximum ODE residual, and mean ODE residual. For the Fourier approximation, the app reports mean absolute error, root mean square error, maximum absolute error, and the number of terms used. This makes the output more complete because it does not only show the graph; it also gives numerical evidence about the quality of the computed result.
