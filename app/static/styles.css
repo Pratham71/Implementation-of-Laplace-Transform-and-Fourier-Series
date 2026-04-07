@@ -357,6 +357,58 @@ button:focus-visible,
   font-family: "Consolas", "Courier New", monospace;
 }
 
+.damping-panel {
+  margin-bottom: 1rem;
+  border: 1px solid rgba(13, 107, 120, 0.22);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(217, 235, 232, 0.72), rgba(255, 250, 244, 0.92));
+  padding: 0.9rem;
+}
+
+.damping-panel h4 {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.damping-panel__note {
+  margin: 0 0 0.85rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.damping-panel code {
+  border-radius: 0.55rem;
+  background: rgba(31, 35, 38, 0.08);
+  padding: 0.18rem 0.35rem;
+  font-family: "Consolas", "Courier New", monospace;
+}
+
+.damping-guide-grid {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.85rem;
+}
+
+.damping-guide-grid article {
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(31, 35, 38, 0.08);
+  padding: 0.75rem;
+}
+
+.damping-guide-grid h5 {
+  margin: 0 0 0.4rem;
+  font-size: 0.92rem;
+}
+
+.damping-guide-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .coefficient-panel {
   margin: 1rem 0;
   border: 1px solid var(--line);
@@ -468,6 +520,7 @@ button:focus-visible,
   .two-column,
   .controls,
   .controls--inline,
+  .damping-guide-grid,
   .metric-grid {
     grid-template-columns: 1fr;
   }

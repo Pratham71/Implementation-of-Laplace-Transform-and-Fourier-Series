@@ -11,6 +11,7 @@ from app.schemas.applications import (
     FourierErrorAnalysis,
     FourierApplicationResponse,
     FourierSignalResponse,
+    LaplaceDampingClassification,
     LaplaceErrorAnalysis,
     LaplaceApplicationResponse,
     LaplaceSimulationResponse,
@@ -20,6 +21,35 @@ from app.schemas.applications import (
 
 SOLVER_RTOL = 1e-6
 SOLVER_ATOL = 1e-8
+
+
+def classify_damping(*, m: float, c: float, k: float) -> LaplaceDampingClassification:
+    critical_damping = 2.0 * math.sqrt(m * k)
+    damping_ratio = c / critical_damping
+
+    if math.isclose(damping_ratio, 1.0, rel_tol=1e-4, abs_tol=1e-4):
+        damping_type = "Critically damped"
+        explanation = (
+            "The system returns to equilibrium as quickly as possible without oscillating."
+        )
+    elif damping_ratio < 1.0:
+        damping_type = "Underdamped"
+        explanation = (
+            "The system oscillates while the damper gradually reduces the motion amplitude."
+        )
+    else:
+        damping_type = "Overdamped"
+        explanation = (
+            "The system does not oscillate, but it returns to equilibrium more slowly."
+        )
+
+    return LaplaceDampingClassification(
+        damping_type=damping_type,
+        damping_ratio=round(float(damping_ratio), 6),
+        critical_damping=round(float(critical_damping), 6),
+        formula="zeta = c / (2*sqrt(m*k)); zeta < 1 underdamped, zeta = 1 critical, zeta > 1 overdamped",
+        explanation=explanation,
+    )
 
 
 def get_laplace_application() -> LaplaceApplicationResponse:
@@ -129,6 +159,7 @@ def simulate_laplace(
                 "plot-resolution/numerical consistency rather than an exact symbolic error."
             ),
         ),
+        damping_classification=classify_damping(m=m, c=c, k=k),
     )
 
 

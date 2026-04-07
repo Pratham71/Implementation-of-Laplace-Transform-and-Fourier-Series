@@ -119,6 +119,17 @@ controls the physical behavior of the system:
 
 If damping is small, the response oscillates for longer time. If damping increases, the oscillations decay faster.
 
+The damping type is checked using the damping ratio formula:
+
+`zeta = c / (2 sqrt(mk))`
+
+The three possible cases are:
+- underdamped when `zeta < 1`, where the system oscillates and the amplitude slowly reduces
+- critically damped when `zeta = 1`, where the system returns to equilibrium as quickly as possible without oscillating
+- overdamped when `zeta > 1`, where the system does not oscillate but returns more slowly than the critically damped case
+
+For the default values used in the app, `zeta = 0.45 / 4 = 0.1125`, so the displayed case is underdamped.
+
 ### Why Numerical Simulation Was Also Used
 The transformed expression is correct mathematically, but the graph in the application was generated numerically because:
 - it is faster to produce time-domain points for plotting

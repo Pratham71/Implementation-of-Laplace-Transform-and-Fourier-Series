@@ -164,6 +164,31 @@ function renderMetrics(id, metrics) {
   }
 }
 
+function renderDampingClassification(classification) {
+  if (!classification) {
+    return;
+  }
+
+  renderMetrics("laplace-damping-classification", [
+    {
+      label: "Current type",
+      value: classification.damping_type,
+    },
+    {
+      label: "Damping ratio",
+      value: `zeta = ${formatMetric(classification.damping_ratio)}`,
+    },
+    {
+      label: "Critical damping",
+      value: `c_c = ${formatMetric(classification.critical_damping)}`,
+    },
+    {
+      label: "Meaning",
+      value: classification.explanation,
+    },
+  ]);
+}
+
 function createPolyline(points, color, width) {
   return `<polyline fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" points="${points}" />`;
 }
@@ -377,12 +402,16 @@ async function loadLaplaceSimulation() {
         value: `rtol ${data.error_analysis.relative_tolerance}, atol ${data.error_analysis.absolute_tolerance}`,
       },
     ]);
+    renderDampingClassification(data.damping_classification);
     setDownloadEnabled("download-laplace", true);
   } catch (error) {
     status.textContent =
       "Simulation could not be loaded. Check the parameter values and try again.";
     renderMetrics("laplace-error-analysis", [
       { label: "Solver status", value: "Unavailable" },
+    ]);
+    renderMetrics("laplace-damping-classification", [
+      { label: "Current type", value: "Unavailable" },
     ]);
     setDownloadEnabled("download-laplace", false);
   }

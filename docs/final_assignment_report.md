@@ -115,6 +115,8 @@ indicates that the system is underdamped. The damping ratio for the default valu
 
 Since the damping ratio is less than 1, the motion is oscillatory, but the amplitude gradually decays over time. This is exactly what is expected in a lightly damped vibration system such as a vehicle suspension or a machine mount.
 
+The app now also classifies the damping case automatically. The classification uses the formula `zeta = c / (2 sqrt(mk))`. If `zeta < 1`, the system is underdamped and oscillates while the amplitude decays. If `zeta = 1`, the system is critically damped and returns to equilibrium as fast as possible without oscillating. If `zeta > 1`, the system is overdamped and returns to equilibrium without oscillating, but more slowly than the critically damped case.
+
 ### Why A Numerical Method Was Used In The Code
 The Laplace-domain expression explains the mathematics clearly, but for plotting displacement against time, the application uses a numerical approach. This was done for three practical reasons:
 - it is more convenient to generate time-domain points directly

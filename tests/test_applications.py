@@ -28,10 +28,14 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "Fourier Coefficient Plot" in response.text
     assert "Download Fourier Coefficients Graph" in response.text
     assert "a0 = 0" in response.text
+    assert "Damping Regime Guide" in response.text
+    assert "Underdamped" in response.text
+    assert "Critically damped" in response.text
+    assert "Overdamped" in response.text
     assert "Axis Guide" in response.text
     assert "Laplace x-axis: time t in seconds" in response.text
     assert "Fourier x-axis: x values in radians" in response.text
-    assert "/static/app.js?v=coefficient-plot" in response.text
+    assert "/static/app.js?v=damping-regime" in response.text
     assert response.headers["cache-control"] == "no-store"
 
 
@@ -43,6 +47,15 @@ def test_chart_renderer_includes_downloadable_wave_legends() -> None:
     assert "Applied force F(t)" in response.text
     assert "Original signal f(x)=x" in response.text
     assert "Fourier approximation" in response.text
+
+
+def test_frontend_renders_laplace_damping_classification() -> None:
+    response = client.get("/static/app.js")
+
+    assert response.status_code == 200
+    assert "renderDampingClassification" in response.text
+    assert "laplace-damping-classification" in response.text
+    assert "Damping ratio" in response.text
 
 
 def test_frontend_renders_fourier_coefficient_chart() -> None:
@@ -83,6 +96,19 @@ def test_laplace_simulation_returns_chart_ready_series() -> None:
     assert payload["error_analysis"]["max_ode_residual"] >= 0
     assert payload["error_analysis"]["mean_ode_residual"] >= 0
     assert payload["error_analysis"]["relative_tolerance"] == 1e-6
+    assert payload["damping_classification"]["damping_type"] == "Underdamped"
+    assert payload["damping_classification"]["damping_ratio"] == 0.1125
+    assert payload["damping_classification"]["critical_damping"] == 4.0
+
+
+def test_laplace_simulation_classifies_critical_and_overdamped_cases() -> None:
+    critical = client.get("/api/applications/laplace/simulate?m=1&c=4&k=4").json()
+    overdamped = client.get("/api/applications/laplace/simulate?m=1&c=6&k=4").json()
+
+    assert critical["damping_classification"]["damping_type"] == "Critically damped"
+    assert critical["damping_classification"]["damping_ratio"] == 1.0
+    assert overdamped["damping_classification"]["damping_type"] == "Overdamped"
+    assert overdamped["damping_classification"]["damping_ratio"] == 1.5
 
 
 def test_laplace_simulation_rejects_non_positive_mass() -> None:

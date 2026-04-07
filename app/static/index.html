@@ -93,6 +93,32 @@
                   </div>
                 </dl>
               </section>
+              <section class="damping-panel" aria-labelledby="laplace-damping-title">
+                <h4 id="laplace-damping-title">Damping Regime Guide</h4>
+                <p class="damping-panel__note">
+                  Formula: <code>zeta = c / (2*sqrt(m*k))</code>. The current simulation is classified from the selected <code>m</code>, <code>c</code>, and <code>k</code> values.
+                </p>
+                <dl id="laplace-damping-classification" class="metric-grid">
+                  <div>
+                    <dt>Current type</dt>
+                    <dd>Waiting for simulation</dd>
+                  </div>
+                </dl>
+                <div class="damping-guide-grid" aria-label="Damping regime definitions">
+                  <article>
+                    <h5>Underdamped</h5>
+                    <p><code>zeta &lt; 1</code>: oscillates while the amplitude slowly reduces.</p>
+                  </article>
+                  <article>
+                    <h5>Critically damped</h5>
+                    <p><code>zeta = 1</code>: fastest return to equilibrium without oscillation.</p>
+                  </article>
+                  <article>
+                    <h5>Overdamped</h5>
+                    <p><code>zeta &gt; 1</code>: no oscillation, but slower return than critical damping.</p>
+                  </article>
+                </div>
+              </section>
               <svg id="laplace-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Laplace displacement chart"></svg>
               <section class="axis-guide" aria-label="Laplace graph axis guide">
                 <h4>Axis Guide</h4>
@@ -243,6 +269,6 @@
       </article>
     </main>
 
-    <script type="module" src="/static/app.js?v=coefficient-plot"></script>
+    <script type="module" src="/static/app.js?v=damping-regime"></script>
   </body>
 </html>

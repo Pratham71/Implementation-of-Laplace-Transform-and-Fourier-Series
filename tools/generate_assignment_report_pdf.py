@@ -346,6 +346,8 @@ def build_metrics_table(laplace_metrics: dict, fourier_metrics: dict) -> Table:
         ["Laplace", "Maximum displacement", f"{laplace_metrics['max_displacement']:.4f}"],
         ["Laplace", "Minimum displacement", f"{laplace_metrics['min_displacement']:.4f}"],
         ["Laplace", "Displacement at t = 12 s", f"{laplace_metrics['final_displacement']:.4f}"],
+        ["Laplace", "Damping type", laplace_metrics["damping_type"]],
+        ["Laplace", "Damping ratio zeta", f"{laplace_metrics['damping_ratio']:.4f}"],
         ["Fourier", "Mean absolute error with 5 terms", f"{fourier_metrics['mae_5']:.4f}"],
         ["Fourier", "Mean absolute error with 20 terms", f"{fourier_metrics['mae_20']:.4f}"],
     ]
@@ -385,7 +387,7 @@ def build_story():
             ["Student Name", "Pratham Nagpal"],
             ["Student ID", "2024A7PS0071U"],
             ["Section", "L4"],
-            ["Instructor Name", "[Add Instructor Name]"],
+            ["Instructor Name", "Dr. Soma Sundaram"],
             ["Date of Submission", "8 April 2026"],
         ],
         colWidths=[52 * mm, 95 * mm],
@@ -438,6 +440,8 @@ def build_story():
         "max_displacement": float(np.max(laplace_disp)),
         "min_displacement": float(np.min(laplace_disp)),
         "final_displacement": float(laplace_disp[-1]),
+        "damping_type": laplace.damping_classification.damping_type,
+        "damping_ratio": laplace.damping_classification.damping_ratio,
     }
     fourier_metrics = {
         "mae_5": float(np.mean(np.abs(fourier_signal - fourier_approx_5))),
@@ -553,8 +557,8 @@ def build_story():
         )
     )
 
-    laplace_code = read_code_excerpt(SERVICE_FILE, 69, 130)
-    fourier_code = read_code_excerpt(SERVICE_FILE, 173, 198)
+    laplace_code = read_code_excerpt(SERVICE_FILE, 26, 163)
+    fourier_code = read_code_excerpt(SERVICE_FILE, 206, 246)
 
     code_style = ParagraphStyle(
         "AppendixCode",
