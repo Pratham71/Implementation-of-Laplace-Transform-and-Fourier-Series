@@ -140,7 +140,7 @@ function setDownloadEnabled(buttonId, enabled) {
   button.disabled = !enabled;
 }
 
-function renderChart(svgId, series, xLabel, yLabel) {
+function renderChart(svgId, series, xLabel, yLabel, guideText) {
   const svg = document.getElementById(svgId);
   if (!svg || !series.length) {
     return;
@@ -187,10 +187,11 @@ function renderChart(svgId, series, xLabel, yLabel) {
     <line x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
     <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" stroke="rgba(31, 35, 38, 0.18)" stroke-width="1.5" />
     ${lines}
-    <text x="${width / 2}" y="${height - 8}" text-anchor="middle" fill="#5b6468" font-size="12">${xLabel}</text>
+    <text x="${width / 2}" y="${height - 20}" text-anchor="middle" fill="#5b6468" font-size="12">${xLabel}</text>
     <text x="16" y="${height / 2}" text-anchor="middle" fill="#5b6468" font-size="12" transform="rotate(-90 16 ${height / 2})">${yLabel}</text>
     <text x="${padding.left}" y="${padding.top - 4}" fill="#5b6468" font-size="11">${formatNumber(maxY)}</text>
     <text x="${padding.left}" y="${height - padding.bottom + 14}" fill="#5b6468" font-size="11">${formatNumber(minY)}</text>
+    <text x="${width / 2}" y="${height - 7}" text-anchor="middle" fill="#5b6468" font-size="10">${guideText}</text>
   `;
 }
 
@@ -291,6 +292,7 @@ async function loadLaplaceSimulation() {
       ],
       "Time (s)",
       "Response",
+      "x-axis = sampled time index t; y-axis = displacement/forcing response",
     );
     renderMetrics("laplace-error-analysis", [
       {
@@ -339,6 +341,7 @@ async function loadFourierSignal() {
       ],
       "x (radians)",
       "Amplitude",
+      "x-axis = sampled x index in radians; y-axis = signal amplitude",
     );
     renderMetrics("fourier-error-analysis", [
       {

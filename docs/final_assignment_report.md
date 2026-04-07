@@ -343,6 +343,13 @@ The Laplace graph shows how displacement changes with time for a forced, lightly
 
 The Fourier graph shows the original signal together with the truncated Fourier approximation. For a small number of terms, the approximation is rough. When more terms are used, the reconstructed signal becomes closer to the original. This provides a direct visual demonstration of how Fourier methods improve with additional retained components.
 
+### Axis And Index Meaning
+For the Laplace graph, the x-axis represents time `t` in seconds. The y-axis represents the system response values, mainly displacement `y(t)`, with the forcing signal shown as a comparison curve. Each plotted index corresponds to one sampled time value returned by the backend.
+
+For the Fourier graph, the x-axis represents sampled `x` values in radians from `-pi` to `pi`. The y-axis represents signal amplitude for the original function and the Fourier approximation. Each plotted index corresponds to one sampled `x` value returned by the backend.
+
+The downloaded graph image includes axis labels and a short guide line so that the saved graph is understandable when inserted into the final report.
+
 ## Error Analysis Summary
 The final application includes error analysis directly in the frontend. For the Laplace simulation, the app reports solver status, tolerance values, maximum ODE residual, and mean ODE residual. For the Fourier approximation, the app reports mean absolute error, root mean square error, maximum absolute error, and the number of terms used. This makes the output more complete because it does not only show the graph; it also gives numerical evidence about the quality of the computed result.
 

@@ -35,6 +35,7 @@ The project includes:
   - Supports parameter input for simulation.
   - Shows error analysis for both graphs.
   - Shows visible Fourier coefficient values for `a0`, `an`, and `bn`.
+  - Shows an axis guide explaining what the x-axis, y-axis, and point index mean.
   - Lets you download the rendered graphs as PNG files.
 - Report generator
   - Produces the final assignment PDF in `docs/2024A7PS0071U.pdf`.

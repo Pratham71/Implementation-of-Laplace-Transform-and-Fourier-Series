@@ -30,6 +30,7 @@
   - Render responsive SVG charts without adding a charting dependency.
   - Display error analysis next to each rendered graph.
   - Display a Fourier coefficient table with `a0`, `an`, `bn`, and readable term values.
+  - Display axis guides so downloaded graph images are understandable in the report.
   - Preserve static educational copy on screen even when simulation requests fail.
 
 ## API Contract

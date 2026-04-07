@@ -331,6 +331,11 @@ In real systems, the compression process is more advanced than a simple Fourier 
 - The Fourier-series model gave the coefficients for `f(x) = x` and showed how a sum of sine waves reconstructs the signal.
 - The approximation graph confirmed that more terms produce a better reconstruction.
 
+### Axis And Index Meaning
+- Laplace graph: the x-axis is time `t` in seconds, and the y-axis is the system response value. Each plotted index is one sampled time point.
+- Fourier graph: the x-axis is `x` in radians from `-pi` to `pi`, and the y-axis is signal amplitude. Each plotted index is one sampled `x` point.
+- The downloaded graph contains axis labels so it can be used directly in the report.
+
 ## Conclusion
 This assignment showed how two important mathematical tools are used in practical systems.
 

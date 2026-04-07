@@ -289,6 +289,7 @@ Implementation notes:
 - The frontend should fetch new chart data after a valid form submission.
 - The frontend should display error analysis next to each graph.
 - The frontend should display visible Fourier coefficient values for the requested approximation.
+- The frontend should display an axis guide explaining what the x-axis, y-axis, and sampled point index mean for each graph.
 
 ### State Requirements
 - Show a loading message while content or charts are being requested.

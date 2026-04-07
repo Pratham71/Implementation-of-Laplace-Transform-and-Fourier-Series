@@ -94,6 +94,12 @@
                 </dl>
               </section>
               <svg id="laplace-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Laplace displacement chart"></svg>
+              <section class="axis-guide" aria-label="Laplace graph axis guide">
+                <h4>Axis Guide</h4>
+                <p>Laplace x-axis: time t in seconds.</p>
+                <p>Laplace y-axis: system response values, mainly displacement y(t), with forcing shown for comparison.</p>
+                <p>Index meaning: every point index represents one sampled time value returned by the backend.</p>
+              </section>
               <div class="legend" aria-hidden="true">
                 <span><i class="swatch swatch--primary"></i> Displacement</span>
                 <span><i class="swatch swatch--secondary"></i> Forcing</span>
@@ -180,6 +186,12 @@
                 </dl>
               </section>
               <svg id="fourier-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Fourier approximation chart"></svg>
+              <section class="axis-guide" aria-label="Fourier graph axis guide">
+                <h4>Axis Guide</h4>
+                <p>Fourier x-axis: x values in radians from -pi to pi.</p>
+                <p>Fourier y-axis: signal amplitude for the original function and Fourier approximation.</p>
+                <p>Index meaning: every point index represents one sampled x value returned by the backend.</p>
+              </section>
               <div class="legend" aria-hidden="true">
                 <span><i class="swatch swatch--primary"></i> Original signal</span>
                 <span><i class="swatch swatch--accent"></i> Fourier approximation</span>
@@ -202,6 +214,6 @@
       </article>
     </main>
 
-    <script type="module" src="/static/app.js?v=error-analysis"></script>
+    <script type="module" src="/static/app.js?v=axis-guide"></script>
   </body>
 </html>

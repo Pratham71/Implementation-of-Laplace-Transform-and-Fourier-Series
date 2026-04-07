@@ -376,6 +376,32 @@ button:focus-visible,
   color: var(--muted);
 }
 
+.axis-guide {
+  margin-top: 0.85rem;
+  border-left: 4px solid rgba(13, 107, 120, 0.45);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.58);
+  padding: 0.8rem 0.9rem;
+}
+
+.axis-guide h4 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.axis-guide p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.axis-guide code {
+  border-radius: 0.45rem;
+  background: rgba(31, 35, 38, 0.08);
+  padding: 0.12rem 0.28rem;
+  font-family: "Consolas", "Courier New", monospace;
+}
+
 .metric-grid {
   display: grid;
   gap: 0.65rem;

@@ -26,7 +26,10 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "RMSE = sqrt(mean(error^2))" in response.text
     assert "Fourier Coefficients" in response.text
     assert "a0 = 0" in response.text
-    assert "/static/app.js?v=error-analysis" in response.text
+    assert "Axis Guide" in response.text
+    assert "Laplace x-axis: time t in seconds" in response.text
+    assert "Fourier x-axis: x values in radians" in response.text
+    assert "/static/app.js?v=axis-guide" in response.text
     assert response.headers["cache-control"] == "no-store"
 
 
