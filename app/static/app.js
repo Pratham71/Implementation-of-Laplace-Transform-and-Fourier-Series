@@ -94,6 +94,42 @@ function renderFourierCoefficients(coefficients) {
   `;
 }
 
+function renderCoefficientChart(coefficients) {
+  const terms = coefficients?.terms ?? [];
+  if (!terms.length) {
+    setDownloadEnabled("download-fourier-coefficients", false);
+    return;
+  }
+
+  const nValues = terms.map((coefficient) => coefficient.n);
+  const anValues = terms.map((coefficient) => coefficient.an);
+  const bnValues = terms.map((coefficient) => coefficient.bn);
+
+  renderChart(
+    "fourier-coefficient-chart",
+    [
+      {
+        label: "Cosine coefficient a_n",
+        x: nValues,
+        y: anValues,
+        color: "#7a8790",
+        width: 2.25,
+      },
+      {
+        label: "Sine coefficient b_n",
+        x: nValues,
+        y: bnValues,
+        color: "#b74d27",
+        width: 3,
+      },
+    ],
+    "Coefficient index n",
+    "Coefficient value",
+    "x-axis = term index n; y-axis = Fourier coefficients a_n and b_n",
+  );
+  setDownloadEnabled("download-fourier-coefficients", true);
+}
+
 function formatNumber(value) {
   return Number.parseFloat(value).toFixed(2);
 }
@@ -391,6 +427,7 @@ async function loadFourierSignal() {
       },
     ]);
     renderFourierCoefficients(data.coefficients);
+    renderCoefficientChart(data.coefficients);
     setDownloadEnabled("download-fourier", true);
   } catch (error) {
     status.textContent =
@@ -399,6 +436,7 @@ async function loadFourierSignal() {
       { label: "Approximation status", value: "Unavailable" },
     ]);
     setDownloadEnabled("download-fourier", false);
+    setDownloadEnabled("download-fourier-coefficients", false);
   }
 }
 

@@ -146,6 +146,35 @@
               <div id="fourier-coefficients">
                 <p class="muted">Run the Fourier approximation to view coefficient values.</p>
               </div>
+              <section class="coefficient-plot" aria-labelledby="fourier-coefficient-plot-title">
+                <h4 id="fourier-coefficient-plot-title">Fourier Coefficient Plot</h4>
+                <p class="coefficient-panel__note">
+                  This plot shows the cosine coefficients <code>a_n</code> and sine coefficients <code>b_n</code> against the term index <code>n</code>.
+                </p>
+                <svg
+                  id="fourier-coefficient-chart"
+                  class="chart chart--compact"
+                  viewBox="0 0 640 260"
+                  role="img"
+                  aria-label="Fourier coefficient chart"
+                ></svg>
+                <div class="legend" aria-hidden="true">
+                  <span><i class="swatch swatch--muted"></i> Cosine coefficient a_n</span>
+                  <span><i class="swatch swatch--accent"></i> Sine coefficient b_n</span>
+                </div>
+                <div class="chart-actions">
+                  <button
+                    type="button"
+                    id="download-fourier-coefficients"
+                    class="chart-download"
+                    data-chart-id="fourier-coefficient-chart"
+                    data-filename="fourier-coefficients-graph.png"
+                    disabled
+                  >
+                    Download Fourier Coefficients Graph
+                  </button>
+                </div>
+              </section>
             </section>
             <div id="fourier-use-cases"></div>
             <p><strong>Assignment relevance:</strong> <span id="fourier-assignment"></span></p>
@@ -214,6 +243,6 @@
       </article>
     </main>
 
-    <script type="module" src="/static/app.js?v=legend"></script>
+    <script type="module" src="/static/app.js?v=coefficient-plot"></script>
   </body>
 </html>

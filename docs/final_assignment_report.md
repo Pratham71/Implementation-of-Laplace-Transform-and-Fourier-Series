@@ -252,7 +252,7 @@ Some visible values are:
 - for `n=3`, `b3 = 0.6667`
 - for `n=4`, `b4 = -0.5`
 
-These values are displayed in a coefficient table so that the graph is connected directly to the terms used in the Fourier approximation.
+These values are displayed in a coefficient table and a separate coefficient plot so that the graph is connected directly to the terms used in the Fourier approximation. In the coefficient plot, the x-axis represents the term index `n`, while the y-axis represents the coefficient value. The cosine coefficients `an` lie on the zero line, and the sine coefficients `bn` alternate in sign while decreasing in magnitude.
 
 ### Interpretation Of The Result
 This expansion proves that the original function can be reconstructed from sine waves. That is the main idea behind signal decomposition:
@@ -342,6 +342,8 @@ This approach satisfies the assignment requirement of combining mathematical pro
 The Laplace graph shows how displacement changes with time for a forced, lightly damped system. The curve oscillates and gradually stabilizes because the damping coefficient removes energy from the system. The forcing curve is also displayed so that the relationship between input and response can be observed directly.
 
 The Fourier graph shows the original signal together with the truncated Fourier approximation. For a small number of terms, the approximation is rough. When more terms are used, the reconstructed signal becomes closer to the original. This provides a direct visual demonstration of how Fourier methods improve with additional retained components.
+
+The Fourier coefficient plot shows the actual coefficient values used to build the approximation. This makes it easier to see why the approximation is made mostly from sine terms for `f(x)=x`: all cosine coefficients are zero, while the sine coefficients contribute the alternating terms.
 
 ### Axis And Index Meaning
 For the Laplace graph, the x-axis represents time `t` in seconds. The y-axis represents the system response values, mainly displacement `y(t)`, with the forcing signal shown as a comparison curve. Each plotted index corresponds to one sampled time value returned by the backend.

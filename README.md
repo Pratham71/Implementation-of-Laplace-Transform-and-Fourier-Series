@@ -35,6 +35,7 @@ The project includes:
   - Supports parameter input for simulation.
   - Shows error analysis for both graphs.
   - Shows visible Fourier coefficient values for `a0`, `an`, and `bn`.
+  - Plots Fourier coefficient values for `a_n` and `b_n` against term index `n`.
   - Shows an axis guide explaining what the x-axis, y-axis, and point index mean.
   - Shows a color legend identifying which wave is displacement, force, original signal, and approximation.
   - Lets you download the rendered graphs as PNG files.

@@ -267,6 +267,7 @@ Examples:
 - `b4 = -0.5`
 
 These values help show how the Fourier approximation is actually built term by term.
+The application also plots these coefficients against the term index `n`. The `an` values appear as a zero line because `f(x)=x` is odd, while the `bn` values alternate sign and reduce in size as `n` increases.
 
 ### Interpretation
 This result shows that a nontrivial waveform can be built using a sum of sine waves. That is the key idea behind signal decomposition:
@@ -286,6 +287,7 @@ The Fourier feature is implemented in Python as follows:
    to the approximation.
 5. Return the original signal and the truncated Fourier approximation.
 6. Plot both curves together in the frontend.
+7. Plot the Fourier coefficient values `an` and `bn` against the term index `n`.
 
 This implementation is in:
 - [applications_service.py](/C:/Users/prath/OneDrive/Desktop/Maths-3/Trial%202/app/services/applications_service.py#L153)
@@ -294,6 +296,7 @@ This implementation is in:
 The Fourier graph shows:
 - the original line `f(x) = x`
 - the approximation formed from a finite number of sine terms
+- the coefficient plot for `an` and `bn`
 
 You should include:
 - one screenshot of the code
