@@ -181,7 +181,6 @@ def generate_fourier_signal(*, terms: int, num_points: int) -> FourierSignalResp
         approximation += 2.0 * ((-1) ** (n + 1)) * np.sin(n * x) / n
 
     absolute_error = np.abs(signal - approximation)
-    visible_coefficient_count = min(terms, 10)
     coefficient_terms = [
         FourierCoefficientTerm(
             n=n,
@@ -189,7 +188,7 @@ def generate_fourier_signal(*, terms: int, num_points: int) -> FourierSignalResp
             bn=round(float(2.0 * ((-1) ** (n + 1)) / n), 6),
             term=f"{round(float(2.0 * ((-1) ** (n + 1)) / n), 6)} sin({n}x)",
         )
-        for n in range(1, visible_coefficient_count + 1)
+        for n in range(1, terms + 1)
     ]
 
     return FourierSignalResponse(

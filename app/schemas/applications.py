@@ -70,7 +70,9 @@ class FourierCoefficients(BaseModel):
     a0: float = Field(description="Constant Fourier coefficient.")
     an_note: str = Field(description="Explanation for cosine coefficients.")
     bn_formula: str = Field(description="Formula used for sine coefficients.")
-    terms: list[FourierCoefficientTerm] = Field(description="Visible coefficient rows.")
+    terms: list[FourierCoefficientTerm] = Field(
+        description="Coefficient rows for each retained Fourier term."
+    )
 
 
 class FourierSignalResponse(BaseModel):
@@ -80,4 +82,6 @@ class FourierSignalResponse(BaseModel):
     absolute_error: list[float] = Field(description="Pointwise absolute approximation error.")
     terms_used: int = Field(description="The number of Fourier terms used.")
     error_analysis: FourierErrorAnalysis = Field(description="Fourier approximation error analysis.")
-    coefficients: FourierCoefficients = Field(description="Visible Fourier coefficient values.")
+    coefficients: FourierCoefficients = Field(
+        description="Fourier coefficient values for each retained term."
+    )

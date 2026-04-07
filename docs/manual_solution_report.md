@@ -267,7 +267,7 @@ Examples:
 - `b4 = -0.5`
 
 These values help show how the Fourier approximation is actually built term by term.
-The application also plots these coefficients against the term index `n`. The `an` values appear as a zero line because `f(x)=x` is odd, while the `bn` values alternate sign and reduce in size as `n` increases.
+The application also plots these coefficients against the term index `n`. This plot changes when the selected number of Fourier terms changes, so if `n=20` is selected, the coefficient graph shows terms `1` through `20`. The `an` values appear as a zero line because `f(x)=x` is odd, while the `bn` values alternate sign and reduce in size as `n` increases.
 
 ### Interpretation
 This result shows that a nontrivial waveform can be built using a sum of sine waves. That is the key idea behind signal decomposition:

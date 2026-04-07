@@ -79,7 +79,7 @@ function renderFourierCoefficients(coefficients) {
     <p><strong>bn formula:</strong> <code>${coefficients.bn_formula}</code></p>
     <div class="table-wrap">
       <table>
-        <caption class="muted">Showing the first ${coefficients.terms.length} coefficient terms</caption>
+        <caption class="muted">Showing coefficient terms 1 through ${coefficients.terms.length}</caption>
         <thead>
           <tr>
             <th scope="col">n</th>

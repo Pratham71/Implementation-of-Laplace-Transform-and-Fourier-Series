@@ -30,7 +30,7 @@
   - Render responsive SVG charts without adding a charting dependency.
   - Display error analysis next to each rendered graph.
   - Display a Fourier coefficient table with `a0`, `an`, `bn`, and readable term values.
-  - Plot Fourier coefficient values `an` and `bn` against the term index `n`.
+  - Plot Fourier coefficient values `an` and `bn` against the term index `n`, updating the coefficient range when the selected term count changes.
   - Display axis guides so downloaded graph images are understandable in the report.
   - Display color legends inside downloaded chart SVGs so each wave is self-identifying.
   - Preserve static educational copy on screen even when simulation requests fail.

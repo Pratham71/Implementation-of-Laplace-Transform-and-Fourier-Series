@@ -289,7 +289,7 @@ Implementation notes:
 - The frontend should fetch new chart data after a valid form submission.
 - The frontend should display error analysis next to each graph.
 - The frontend should display visible Fourier coefficient values for the requested approximation.
-- The frontend should plot Fourier coefficient values `an` and `bn` against the term index `n`.
+- The frontend should plot Fourier coefficient values `an` and `bn` against the term index `n`, and the coefficient range should update when the selected number of Fourier terms changes.
 - The frontend should display an axis guide explaining what the x-axis, y-axis, and sampled point index mean for each graph.
 - The frontend should include a visible color legend inside each rendered SVG so downloaded graph images identify each curve without extra context.
 

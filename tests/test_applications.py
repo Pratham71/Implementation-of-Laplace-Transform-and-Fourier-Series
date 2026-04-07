@@ -125,6 +125,17 @@ def test_fourier_signal_returns_original_and_approximation() -> None:
     assert payload["coefficients"]["terms"][1]["bn"] == -1.0
 
 
+def test_fourier_coefficients_follow_selected_term_count() -> None:
+    response = client.get("/api/applications/fourier/signal?terms=20")
+
+    assert response.status_code == 200
+    coefficient_terms = response.json()["coefficients"]["terms"]
+
+    assert len(coefficient_terms) == 20
+    assert coefficient_terms[-1]["n"] == 20
+    assert coefficient_terms[-1]["bn"] == -0.1
+
+
 def test_fourier_error_decreases_when_more_terms_are_used() -> None:
     low_terms = client.get("/api/applications/fourier/signal?terms=5").json()
     high_terms = client.get("/api/applications/fourier/signal?terms=20").json()
