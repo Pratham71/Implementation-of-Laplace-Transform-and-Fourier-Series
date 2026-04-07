@@ -19,6 +19,13 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "Download Laplace Graph" in response.text
     assert "Download Fourier Graph" in response.text
     assert "Error Analysis" in response.text
+    assert "Numerical Error Analysis" in response.text
+    assert "Approximation Error Analysis" in response.text
+    assert "Residual = m*y'' + c*y' + k*y - F(t)" in response.text
+    assert "Absolute Error = |signal - approximation|" in response.text
+    assert "RMSE = sqrt(mean(error^2))" in response.text
+    assert "/static/app.js?v=error-analysis" in response.text
+    assert response.headers["cache-control"] == "no-store"
 
 
 def test_laplace_application_returns_learning_content() -> None:

@@ -78,13 +78,14 @@
             </form>
             <p id="laplace-status" class="status" aria-live="polite"></p>
             <div class="chart-card">
-              <svg id="laplace-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Laplace displacement chart"></svg>
-              <div class="legend" aria-hidden="true">
-                <span><i class="swatch swatch--primary"></i> Displacement</span>
-                <span><i class="swatch swatch--secondary"></i> Forcing</span>
-              </div>
               <section class="error-panel" aria-labelledby="laplace-error-title">
-                <h4 id="laplace-error-title">Error Analysis</h4>
+                <h4 id="laplace-error-title">Numerical Error Analysis</h4>
+                <p class="error-panel__note">
+                  Updates after every simulation with solver status, ODE residuals, and tolerance values.
+                </p>
+                <p class="error-formula">
+                  Formula: <code>Residual = m*y'' + c*y' + k*y - F(t)</code>
+                </p>
                 <dl id="laplace-error-analysis" class="metric-grid">
                   <div>
                     <dt>Solver status</dt>
@@ -92,6 +93,11 @@
                   </div>
                 </dl>
               </section>
+              <svg id="laplace-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Laplace displacement chart"></svg>
+              <div class="legend" aria-hidden="true">
+                <span><i class="swatch swatch--primary"></i> Displacement</span>
+                <span><i class="swatch swatch--secondary"></i> Forcing</span>
+              </div>
               <div class="chart-actions">
                 <button
                   type="button"
@@ -145,13 +151,18 @@
             </form>
             <p id="fourier-status" class="status" aria-live="polite"></p>
             <div class="chart-card">
-              <svg id="fourier-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Fourier approximation chart"></svg>
-              <div class="legend" aria-hidden="true">
-                <span><i class="swatch swatch--primary"></i> Original signal</span>
-                <span><i class="swatch swatch--accent"></i> Fourier approximation</span>
-              </div>
               <section class="error-panel" aria-labelledby="fourier-error-title">
-                <h4 id="fourier-error-title">Error Analysis</h4>
+                <h4 id="fourier-error-title">Approximation Error Analysis</h4>
+                <p class="error-panel__note">
+                  Updates after every Fourier run with absolute-error, RMS-error, and term-count metrics.
+                </p>
+                <p class="error-formula">
+                  Formula: <code>Absolute Error = |signal - approximation|</code>
+                </p>
+                <p class="error-formula">
+                  Formula: <code>MAE = mean(|error|)</code>,
+                  <code>RMSE = sqrt(mean(error^2))</code>
+                </p>
                 <dl id="fourier-error-analysis" class="metric-grid">
                   <div>
                     <dt>Approximation status</dt>
@@ -159,6 +170,11 @@
                   </div>
                 </dl>
               </section>
+              <svg id="fourier-chart" class="chart" viewBox="0 0 640 260" role="img" aria-label="Fourier approximation chart"></svg>
+              <div class="legend" aria-hidden="true">
+                <span><i class="swatch swatch--primary"></i> Original signal</span>
+                <span><i class="swatch swatch--accent"></i> Fourier approximation</span>
+              </div>
               <div class="chart-actions">
                 <button
                   type="button"
@@ -177,6 +193,6 @@
       </article>
     </main>
 
-    <script type="module" src="/static/app.js"></script>
+    <script type="module" src="/static/app.js?v=error-analysis"></script>
   </body>
 </html>
