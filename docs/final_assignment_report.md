@@ -240,6 +240,20 @@ Therefore,
 
 This is the final manual solution for the selected Fourier-series problem.
 
+### Visible Fourier Coefficients
+The frontend also shows the actual Fourier coefficient values used in the approximation. For `f(x)=x`, the coefficients are:
+- `a0 = 0`
+- `an = 0` for all `n`, because `f(x)=x` is an odd function
+- `bn = 2(-1)^(n+1)/n`
+
+Some visible values are:
+- for `n=1`, `b1 = 2`
+- for `n=2`, `b2 = -1`
+- for `n=3`, `b3 = 0.6667`
+- for `n=4`, `b4 = -0.5`
+
+These values are displayed in a coefficient table so that the graph is connected directly to the terms used in the Fourier approximation.
+
 ### Interpretation Of The Result
 This expansion proves that the original function can be reconstructed from sine waves. That is the main idea behind signal decomposition:
 - a complicated shape can be expressed using simpler frequency components
@@ -319,7 +333,8 @@ This structure keeps the code clean and makes it easy to connect theory, impleme
 1. Receive the requested number of terms.
 2. Generate points on `[-pi, pi]`.
 3. Build the approximation term by term.
-4. Return original and approximated signals.
+4. Calculate visible coefficient values `a0`, `an`, and `bn`.
+5. Return original signal, approximated signal, coefficient values, and error metrics.
 
 This approach satisfies the assignment requirement of combining mathematical procedure with coding logic.
 

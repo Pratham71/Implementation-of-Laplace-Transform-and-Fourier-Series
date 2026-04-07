@@ -357,6 +357,25 @@ button:focus-visible,
   font-family: "Consolas", "Courier New", monospace;
 }
 
+.coefficient-panel {
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(241, 226, 206, 0.52);
+  padding: 0.9rem;
+}
+
+.coefficient-panel h4 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.coefficient-panel__note {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+}
+
 .metric-grid {
   display: grid;
   gap: 0.65rem;

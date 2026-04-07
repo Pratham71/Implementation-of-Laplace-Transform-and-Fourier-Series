@@ -6,6 +6,8 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 from app.schemas.applications import (
+    FourierCoefficientTerm,
+    FourierCoefficients,
     FourierErrorAnalysis,
     FourierApplicationResponse,
     FourierSignalResponse,
@@ -179,6 +181,16 @@ def generate_fourier_signal(*, terms: int, num_points: int) -> FourierSignalResp
         approximation += 2.0 * ((-1) ** (n + 1)) * np.sin(n * x) / n
 
     absolute_error = np.abs(signal - approximation)
+    visible_coefficient_count = min(terms, 10)
+    coefficient_terms = [
+        FourierCoefficientTerm(
+            n=n,
+            an=0.0,
+            bn=round(float(2.0 * ((-1) ** (n + 1)) / n), 6),
+            term=f"{round(float(2.0 * ((-1) ** (n + 1)) / n), 6)} sin({n}x)",
+        )
+        for n in range(1, visible_coefficient_count + 1)
+    ]
 
     return FourierSignalResponse(
         x=np.round(x, 6).tolist(),
@@ -194,5 +206,11 @@ def generate_fourier_signal(*, terms: int, num_points: int) -> FourierSignalResp
                 "This is truncation error from using a finite number of Fourier terms. "
                 "Mean error usually decreases as more terms are retained."
             ),
+        ),
+        coefficients=FourierCoefficients(
+            a0=0.0,
+            an_note="an = 0 for all n because f(x)=x is odd.",
+            bn_formula="bn = 2*(-1)^(n+1)/n",
+            terms=coefficient_terms,
         ),
     )

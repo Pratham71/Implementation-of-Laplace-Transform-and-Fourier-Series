@@ -24,6 +24,8 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "Residual = m*y'' + c*y' + k*y - F(t)" in response.text
     assert "Absolute Error = |signal - approximation|" in response.text
     assert "RMSE = sqrt(mean(error^2))" in response.text
+    assert "Fourier Coefficients" in response.text
+    assert "a0 = 0" in response.text
     assert "/static/app.js?v=error-analysis" in response.text
     assert response.headers["cache-control"] == "no-store"
 
@@ -90,6 +92,12 @@ def test_fourier_signal_returns_original_and_approximation() -> None:
     assert payload["error_analysis"]["mean_absolute_error"] > 0
     assert payload["error_analysis"]["root_mean_square_error"] > 0
     assert payload["error_analysis"]["max_absolute_error"] > 0
+    assert payload["coefficients"]["a0"] == 0.0
+    assert payload["coefficients"]["an_note"] == "an = 0 for all n because f(x)=x is odd."
+    assert payload["coefficients"]["terms"][0]["n"] == 1
+    assert payload["coefficients"]["terms"][0]["an"] == 0.0
+    assert payload["coefficients"]["terms"][0]["bn"] == 2.0
+    assert payload["coefficients"]["terms"][1]["bn"] == -1.0
 
 
 def test_fourier_error_decreases_when_more_terms_are_used() -> None:

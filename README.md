@@ -29,11 +29,12 @@ The project includes:
 - `GET /api/applications/fourier`
   - Returns the learning content for Fourier-series-based signal decomposition.
 - `GET /api/applications/fourier/signal`
-  - Generates original signal, approximation, pointwise absolute error, and summary error metrics.
+  - Generates original signal, approximation, visible Fourier coefficients, pointwise absolute error, and summary error metrics.
 - Frontend at `/`
   - Shows both applications in one page.
   - Supports parameter input for simulation.
   - Shows error analysis for both graphs.
+  - Shows visible Fourier coefficient values for `a0`, `an`, and `bn`.
   - Lets you download the rendered graphs as PNG files.
 - Report generator
   - Produces the final assignment PDF in `docs/2024A7PS0071U.pdf`.

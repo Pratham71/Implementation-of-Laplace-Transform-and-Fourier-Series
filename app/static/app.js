@@ -60,6 +60,40 @@ function renderVariablesTable(id, variables) {
   `;
 }
 
+function renderFourierCoefficients(coefficients) {
+  const host = document.getElementById("fourier-coefficients");
+  if (!host || !coefficients) {
+    return;
+  }
+
+  const rows = coefficients.terms
+    .map(
+      (coefficient) =>
+        `<tr><td>${coefficient.n}</td><td>${formatMetric(coefficient.an)}</td><td>${formatMetric(coefficient.bn)}</td><td><code>${coefficient.term}</code></td></tr>`,
+    )
+    .join("");
+
+  host.innerHTML = `
+    <p><strong>a0:</strong> ${formatMetric(coefficients.a0)}</p>
+    <p><strong>an:</strong> ${coefficients.an_note}</p>
+    <p><strong>bn formula:</strong> <code>${coefficients.bn_formula}</code></p>
+    <div class="table-wrap">
+      <table>
+        <caption class="muted">Showing the first ${coefficients.terms.length} coefficient terms</caption>
+        <thead>
+          <tr>
+            <th scope="col">n</th>
+            <th scope="col">an</th>
+            <th scope="col">bn</th>
+            <th scope="col">Term</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 function formatNumber(value) {
   return Number.parseFloat(value).toFixed(2);
 }
@@ -324,6 +358,7 @@ async function loadFourierSignal() {
         value: String(data.terms_used),
       },
     ]);
+    renderFourierCoefficients(data.coefficients);
     setDownloadEnabled("download-fourier", true);
   } catch (error) {
     status.textContent =

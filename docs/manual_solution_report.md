@@ -254,6 +254,20 @@ So the Fourier series for `f(x) = x` is
 
 This is the exact manual result used in the application.
 
+### Visible Fourier Coefficients
+The application also displays the coefficient values used in the approximation:
+- `a0 = 0`
+- `an = 0` for all `n`
+- `bn = 2(-1)^(n+1)/n`
+
+Examples:
+- `b1 = 2`
+- `b2 = -1`
+- `b3 = 0.6667`
+- `b4 = -0.5`
+
+These values help show how the Fourier approximation is actually built term by term.
+
 ### Interpretation
 This result shows that a nontrivial waveform can be built using a sum of sine waves. That is the key idea behind signal decomposition:
 - a complicated signal can be expressed as simple frequency components

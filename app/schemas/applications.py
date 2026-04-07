@@ -59,6 +59,20 @@ class FourierErrorAnalysis(BaseModel):
     error_note: str = Field(description="Short explanation of the Fourier truncation error.")
 
 
+class FourierCoefficientTerm(BaseModel):
+    n: int = Field(description="Harmonic term number.")
+    an: float = Field(description="Cosine coefficient.")
+    bn: float = Field(description="Sine coefficient.")
+    term: str = Field(description="Readable sine term used in the approximation.")
+
+
+class FourierCoefficients(BaseModel):
+    a0: float = Field(description="Constant Fourier coefficient.")
+    an_note: str = Field(description="Explanation for cosine coefficients.")
+    bn_formula: str = Field(description="Formula used for sine coefficients.")
+    terms: list[FourierCoefficientTerm] = Field(description="Visible coefficient rows.")
+
+
 class FourierSignalResponse(BaseModel):
     x: list[float] = Field(description="Sample positions in radians.")
     signal: list[float] = Field(description="Reference waveform samples.")
@@ -66,3 +80,4 @@ class FourierSignalResponse(BaseModel):
     absolute_error: list[float] = Field(description="Pointwise absolute approximation error.")
     terms_used: int = Field(description="The number of Fourier terms used.")
     error_analysis: FourierErrorAnalysis = Field(description="Fourier approximation error analysis.")
+    coefficients: FourierCoefficients = Field(description="Visible Fourier coefficient values.")

@@ -193,6 +193,15 @@ docs/
   "approximation": [-0.02, -0.08, -0.14],
   "absolute_error": [3.12, 3.05, 2.98],
   "terms_used": 10,
+  "coefficients": {
+    "a0": 0.0,
+    "an_note": "an = 0 for all n because f(x)=x is odd.",
+    "bn_formula": "bn = 2*(-1)^(n+1)/n",
+    "terms": [
+      {"n": 1, "an": 0.0, "bn": 2.0, "term": "2.0 sin(1x)"},
+      {"n": 2, "an": 0.0, "bn": -1.0, "term": "-1.0 sin(2x)"}
+    ]
+  },
   "error_analysis": {
     "mean_absolute_error": 0.1184,
     "root_mean_square_error": 0.2472,
@@ -279,6 +288,7 @@ Implementation notes:
 - Fourier section should let the user change the number of retained terms.
 - The frontend should fetch new chart data after a valid form submission.
 - The frontend should display error analysis next to each graph.
+- The frontend should display visible Fourier coefficient values for the requested approximation.
 
 ### State Requirements
 - Show a loading message while content or charts are being requested.
