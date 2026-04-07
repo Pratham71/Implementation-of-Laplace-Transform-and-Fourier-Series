@@ -103,6 +103,14 @@ The application should expose two learning views on the frontend:
   "displacement": [0.0, 0.0005, 0.0021],
   "velocity": [0.0, 0.031, 0.061],
   "forcing": [0.0, 0.0679, 0.1354],
+  "error_analysis": {
+    "solver_success": true,
+    "relative_tolerance": 0.000001,
+    "absolute_tolerance": 0.00000001,
+    "max_ode_residual": 0.00298,
+    "mean_ode_residual": 0.00116,
+    "residual_note": "Residual is estimated from sampled output."
+  },
   "parameters": {
     "m": 1.0,
     "c": 0.45,
@@ -183,7 +191,14 @@ docs/
   "x": [-3.14, -3.13, -3.12],
   "signal": [-3.14, -3.13, -3.12],
   "approximation": [-0.02, -0.08, -0.14],
-  "terms_used": 10
+  "absolute_error": [3.12, 3.05, 2.98],
+  "terms_used": 10,
+  "error_analysis": {
+    "mean_absolute_error": 0.1184,
+    "root_mean_square_error": 0.2472,
+    "max_absolute_error": 3.1416,
+    "error_note": "Truncation error from using finite Fourier terms."
+  }
 }
 ```
 
@@ -263,6 +278,7 @@ Implementation notes:
 - Laplace section should let the user change `m`, `c`, `k`, and `force_amplitude`.
 - Fourier section should let the user change the number of retained terms.
 - The frontend should fetch new chart data after a valid form submission.
+- The frontend should display error analysis next to each graph.
 
 ### State Requirements
 - Show a loading message while content or charts are being requested.

@@ -21,12 +21,22 @@ class LaplaceApplicationResponse(BaseModel):
     assignment_link: str
 
 
+class LaplaceErrorAnalysis(BaseModel):
+    solver_success: bool = Field(description="Whether the numerical ODE solver succeeded.")
+    relative_tolerance: float = Field(description="Relative tolerance used by solve_ivp.")
+    absolute_tolerance: float = Field(description="Absolute tolerance used by solve_ivp.")
+    max_ode_residual: float = Field(description="Maximum absolute ODE residual from sampled output.")
+    mean_ode_residual: float = Field(description="Mean absolute ODE residual from sampled output.")
+    residual_note: str = Field(description="Short explanation of what the residual means.")
+
+
 class LaplaceSimulationResponse(BaseModel):
     t: list[float] = Field(description="Time axis values.")
     displacement: list[float] = Field(description="Simulated displacement values.")
     velocity: list[float] = Field(description="Simulated velocity values.")
     forcing: list[float] = Field(description="Driving force values.")
     parameters: dict[str, float] = Field(description="Parameters used in the run.")
+    error_analysis: LaplaceErrorAnalysis = Field(description="Numerical solver error analysis.")
 
 
 class FourierApplicationResponse(BaseModel):
@@ -42,8 +52,17 @@ class FourierApplicationResponse(BaseModel):
     assignment_link: str
 
 
+class FourierErrorAnalysis(BaseModel):
+    mean_absolute_error: float = Field(description="Average absolute difference from the reference signal.")
+    root_mean_square_error: float = Field(description="RMS approximation error.")
+    max_absolute_error: float = Field(description="Largest pointwise absolute approximation error.")
+    error_note: str = Field(description="Short explanation of the Fourier truncation error.")
+
+
 class FourierSignalResponse(BaseModel):
     x: list[float] = Field(description="Sample positions in radians.")
     signal: list[float] = Field(description="Reference waveform samples.")
     approximation: list[float] = Field(description="Fourier approximation samples.")
+    absolute_error: list[float] = Field(description="Pointwise absolute approximation error.")
     terms_used: int = Field(description="The number of Fourier terms used.")
+    error_analysis: FourierErrorAnalysis = Field(description="Fourier approximation error analysis.")

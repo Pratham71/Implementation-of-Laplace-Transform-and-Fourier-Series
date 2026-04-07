@@ -64,6 +64,36 @@ function formatNumber(value) {
   return Number.parseFloat(value).toFixed(2);
 }
 
+function formatMetric(value) {
+  const numericValue = Number.parseFloat(value);
+  if (!Number.isFinite(numericValue)) {
+    return String(value);
+  }
+  if (Math.abs(numericValue) < 0.001 && numericValue !== 0) {
+    return numericValue.toExponential(2);
+  }
+  return numericValue.toFixed(4);
+}
+
+function renderMetrics(id, metrics) {
+  const host = document.getElementById(id);
+  if (!host) {
+    return;
+  }
+
+  host.innerHTML = "";
+  for (const metric of metrics) {
+    const wrapper = document.createElement("div");
+    const term = document.createElement("dt");
+    const description = document.createElement("dd");
+
+    term.textContent = metric.label;
+    description.textContent = metric.value;
+    wrapper.append(term, description);
+    host.appendChild(wrapper);
+  }
+}
+
 function createPolyline(points, color, width) {
   return `<polyline fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" points="${points}" />`;
 }
@@ -228,10 +258,31 @@ async function loadLaplaceSimulation() {
       "Time (s)",
       "Response",
     );
+    renderMetrics("laplace-error-analysis", [
+      {
+        label: "Solver status",
+        value: data.error_analysis.solver_success ? "Success" : "Check solver",
+      },
+      {
+        label: "Max residual",
+        value: formatMetric(data.error_analysis.max_ode_residual),
+      },
+      {
+        label: "Mean residual",
+        value: formatMetric(data.error_analysis.mean_ode_residual),
+      },
+      {
+        label: "Tolerance",
+        value: `rtol ${data.error_analysis.relative_tolerance}, atol ${data.error_analysis.absolute_tolerance}`,
+      },
+    ]);
     setDownloadEnabled("download-laplace", true);
   } catch (error) {
     status.textContent =
       "Simulation could not be loaded. Check the parameter values and try again.";
+    renderMetrics("laplace-error-analysis", [
+      { label: "Solver status", value: "Unavailable" },
+    ]);
     setDownloadEnabled("download-laplace", false);
   }
 }
@@ -255,10 +306,31 @@ async function loadFourierSignal() {
       "x (radians)",
       "Amplitude",
     );
+    renderMetrics("fourier-error-analysis", [
+      {
+        label: "Mean absolute error",
+        value: formatMetric(data.error_analysis.mean_absolute_error),
+      },
+      {
+        label: "RMS error",
+        value: formatMetric(data.error_analysis.root_mean_square_error),
+      },
+      {
+        label: "Max absolute error",
+        value: formatMetric(data.error_analysis.max_absolute_error),
+      },
+      {
+        label: "Terms used",
+        value: String(data.terms_used),
+      },
+    ]);
     setDownloadEnabled("download-fourier", true);
   } catch (error) {
     status.textContent =
       "Approximation could not be loaded. Enter a positive number of terms and try again.";
+    renderMetrics("fourier-error-analysis", [
+      { label: "Approximation status", value: "Unavailable" },
+    ]);
     setDownloadEnabled("download-fourier", false);
   }
 }

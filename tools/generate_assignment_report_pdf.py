@@ -553,8 +553,8 @@ def build_story():
         )
     )
 
-    laplace_code = read_code_excerpt(SERVICE_FILE, 63, 110)
-    fourier_code = read_code_excerpt(SERVICE_FILE, 153, 166)
+    laplace_code = read_code_excerpt(SERVICE_FILE, 69, 130)
+    fourier_code = read_code_excerpt(SERVICE_FILE, 173, 198)
 
     code_style = ParagraphStyle(
         "AppendixCode",

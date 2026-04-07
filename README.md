@@ -25,14 +25,15 @@ The project includes:
 - `GET /api/applications/laplace`
   - Returns the learning content for the spring-mass-damper model.
 - `GET /api/applications/laplace/simulate`
-  - Generates time-domain data for displacement, velocity, and forcing.
+  - Generates time-domain data for displacement, velocity, forcing, and ODE residual error analysis.
 - `GET /api/applications/fourier`
   - Returns the learning content for Fourier-series-based signal decomposition.
 - `GET /api/applications/fourier/signal`
-  - Generates original and approximated signal data for plotting.
+  - Generates original signal, approximation, pointwise absolute error, and summary error metrics.
 - Frontend at `/`
   - Shows both applications in one page.
   - Supports parameter input for simulation.
+  - Shows error analysis for both graphs.
   - Lets you download the rendered graphs as PNG files.
 - Report generator
   - Produces the final assignment PDF in `docs/2024A7PS0071U.pdf`.

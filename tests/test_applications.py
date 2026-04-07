@@ -18,6 +18,7 @@ def test_home_page_serves_real_world_applications_experience() -> None:
     assert "Pratham Nagpal" in response.text
     assert "Download Laplace Graph" in response.text
     assert "Download Fourier Graph" in response.text
+    assert "Error Analysis" in response.text
 
 
 def test_laplace_application_returns_learning_content() -> None:
@@ -44,6 +45,10 @@ def test_laplace_simulation_returns_chart_ready_series() -> None:
     assert len(payload["t"]) == 300
     assert payload["t"][0] == 0.0
     assert payload["t"][-1] == 12.0
+    assert payload["error_analysis"]["solver_success"] is True
+    assert payload["error_analysis"]["max_ode_residual"] >= 0
+    assert payload["error_analysis"]["mean_ode_residual"] >= 0
+    assert payload["error_analysis"]["relative_tolerance"] == 1e-6
 
 
 def test_laplace_simulation_rejects_non_positive_mass() -> None:
@@ -73,7 +78,21 @@ def test_fourier_signal_returns_original_and_approximation() -> None:
 
     assert len(payload["x"]) == len(payload["signal"])
     assert len(payload["x"]) == len(payload["approximation"])
+    assert len(payload["x"]) == len(payload["absolute_error"])
     assert payload["terms_used"] == 12
+    assert payload["error_analysis"]["mean_absolute_error"] > 0
+    assert payload["error_analysis"]["root_mean_square_error"] > 0
+    assert payload["error_analysis"]["max_absolute_error"] > 0
+
+
+def test_fourier_error_decreases_when_more_terms_are_used() -> None:
+    low_terms = client.get("/api/applications/fourier/signal?terms=5").json()
+    high_terms = client.get("/api/applications/fourier/signal?terms=20").json()
+
+    assert (
+        high_terms["error_analysis"]["mean_absolute_error"]
+        < low_terms["error_analysis"]["mean_absolute_error"]
+    )
 
 
 def test_fourier_signal_rejects_too_few_terms() -> None:

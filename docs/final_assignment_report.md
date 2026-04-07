@@ -145,6 +145,17 @@ For the default parameter set used in the implementation:
 
 These values confirm that the response remains oscillatory but is bounded and shaped by damping. The graph also makes it clear that the forcing and displacement are not perfectly aligned, which is physically reasonable because the system has inertia and damping.
 
+### Error Analysis For Problem 1
+The application now includes numerical error analysis for the Laplace simulation. Since the solution is generated with `scipy.integrate.solve_ivp`, the solver uses strict tolerance values:
+- relative tolerance: `1e-6`
+- absolute tolerance: `1e-8`
+
+The app also estimates the residual of the original differential equation using the sampled output:
+
+`residual = m y'' + c y' + k y - F(t)`
+
+For the default settings, the displayed residual values are small. The residual is not treated as a symbolic error because it is estimated from the plotted sample points. It is mainly used as a practical consistency check to show that the numerical curve still satisfies the original differential equation closely.
+
 ### Real-Life Application Of Problem 1
 The spring-mass-damper system has many practical uses:
 - car suspension systems
@@ -259,6 +270,18 @@ Observed mean absolute error values are:
 
 This confirms that increasing the number of retained terms improves the approximation significantly. At the same time, some overshoot remains near the endpoints because of the Gibbs phenomenon, which is normal for truncated Fourier representations of functions with jump-like periodic extensions.
 
+### Error Analysis For Problem 2
+The Fourier section now calculates pointwise absolute error:
+
+`absolute error = |original signal - Fourier approximation|`
+
+It also reports:
+- mean absolute error
+- root mean square error
+- maximum absolute error
+
+For the report, the most useful value is the mean absolute error because it clearly shows improvement when more terms are included. In the implementation, the mean absolute error decreased from about `0.3300` with 5 terms to about `0.1184` with 20 terms. This confirms that increasing the number of Fourier terms improves the approximation.
+
 ### Real-Life Application Of Problem 2
 This mathematical idea is directly connected to:
 - MP3 and audio compression
@@ -304,6 +327,9 @@ This approach satisfies the assignment requirement of combining mathematical pro
 The Laplace graph shows how displacement changes with time for a forced, lightly damped system. The curve oscillates and gradually stabilizes because the damping coefficient removes energy from the system. The forcing curve is also displayed so that the relationship between input and response can be observed directly.
 
 The Fourier graph shows the original signal together with the truncated Fourier approximation. For a small number of terms, the approximation is rough. When more terms are used, the reconstructed signal becomes closer to the original. This provides a direct visual demonstration of how Fourier methods improve with additional retained components.
+
+## Error Analysis Summary
+The final application includes error analysis directly in the frontend. For the Laplace simulation, the app reports solver status, tolerance values, maximum ODE residual, and mean ODE residual. For the Fourier approximation, the app reports mean absolute error, root mean square error, maximum absolute error, and the number of terms used. This makes the output more complete because it does not only show the graph; it also gives numerical evidence about the quality of the computed result.
 
 ## Real-Life Applications
 ### Laplace Transform

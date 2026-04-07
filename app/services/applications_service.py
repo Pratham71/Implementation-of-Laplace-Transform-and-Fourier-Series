@@ -6,12 +6,18 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 from app.schemas.applications import (
+    FourierErrorAnalysis,
     FourierApplicationResponse,
     FourierSignalResponse,
+    LaplaceErrorAnalysis,
     LaplaceApplicationResponse,
     LaplaceSimulationResponse,
     VariableDefinition,
 )
+
+
+SOLVER_RTOL = 1e-6
+SOLVER_ATOL = 1e-8
 
 
 def get_laplace_application() -> LaplaceApplicationResponse:
@@ -86,13 +92,16 @@ def simulate_laplace(
         (0.0, time_end),
         y0=[0.0, 0.0],
         t_eval=time,
-        rtol=1e-6,
-        atol=1e-8,
+        rtol=SOLVER_RTOL,
+        atol=SOLVER_ATOL,
     )
 
     displacement = solution.y[0]
     velocity = solution.y[1]
     forcing = forcing_term(time)
+    estimated_acceleration = np.gradient(velocity, time, edge_order=2)
+    residual = m * estimated_acceleration + c * velocity + k * displacement - forcing
+    absolute_residual = np.abs(residual)
 
     return LaplaceSimulationResponse(
         t=np.round(time, 6).tolist(),
@@ -107,6 +116,17 @@ def simulate_laplace(
             "time_end": float(time_end),
             "num_points": float(num_points),
         },
+        error_analysis=LaplaceErrorAnalysis(
+            solver_success=bool(solution.success),
+            relative_tolerance=SOLVER_RTOL,
+            absolute_tolerance=SOLVER_ATOL,
+            max_ode_residual=round(float(np.max(absolute_residual)), 8),
+            mean_ode_residual=round(float(np.mean(absolute_residual)), 8),
+            residual_note=(
+                "Residual is estimated from the sampled velocity curve, so it measures "
+                "plot-resolution/numerical consistency rather than an exact symbolic error."
+            ),
+        ),
     )
 
 
@@ -158,9 +178,21 @@ def generate_fourier_signal(*, terms: int, num_points: int) -> FourierSignalResp
     for n in range(1, terms + 1):
         approximation += 2.0 * ((-1) ** (n + 1)) * np.sin(n * x) / n
 
+    absolute_error = np.abs(signal - approximation)
+
     return FourierSignalResponse(
         x=np.round(x, 6).tolist(),
         signal=np.round(signal, 6).tolist(),
         approximation=np.round(approximation, 6).tolist(),
+        absolute_error=np.round(absolute_error, 6).tolist(),
         terms_used=terms,
+        error_analysis=FourierErrorAnalysis(
+            mean_absolute_error=round(float(np.mean(absolute_error)), 8),
+            root_mean_square_error=round(float(np.sqrt(np.mean(absolute_error**2))), 8),
+            max_absolute_error=round(float(np.max(absolute_error)), 8),
+            error_note=(
+                "This is truncation error from using a finite number of Fourier terms. "
+                "Mean error usually decreases as more terms are retained."
+            ),
+        ),
     )

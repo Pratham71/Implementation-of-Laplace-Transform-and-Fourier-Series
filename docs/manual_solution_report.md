@@ -154,6 +154,20 @@ You should include:
 - one screenshot of the output graph
 - a short note stating how changing `c` changes damping behavior
 
+## Error Analysis For Problem 1
+For the Laplace simulation, error analysis is based on the numerical solver tolerance and the residual of the original differential equation:
+
+`residual = m y'' + c y' + k y - F(t)`
+
+The app reports:
+- whether the ODE solver succeeded
+- relative tolerance
+- absolute tolerance
+- maximum ODE residual
+- mean ODE residual
+
+This is useful because it shows whether the plotted numerical result is consistent with the original differential equation.
+
 ## Real-Life Application Of Problem 1
 This model appears in:
 - car suspension systems
@@ -273,6 +287,18 @@ You should include:
 - one screenshot of the graph for a larger number of terms
 
 This helps show that the approximation improves as more terms are included.
+
+## Error Analysis For Problem 2
+For the Fourier approximation, error analysis is calculated using:
+
+`absolute error = |signal - approximation|`
+
+The app reports:
+- mean absolute error
+- root mean square error
+- maximum absolute error
+
+This is useful for the report because it proves numerically that the approximation improves as more Fourier terms are added.
 
 ## Real-Life Application Of Problem 2
 This concept is useful in:
