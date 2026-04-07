@@ -123,6 +123,8 @@ The generated file is:
   - Manual derivation notes for both selected topics.
 - `docs/final_assignment_report.md`
   - Polished final report source.
+- `docs/references.md`
+  - Consolidated bibliography that can be pasted into the assignment report.
 - `docs/2024A7PS0071U.pdf`
   - Submission-ready PDF report.
 - `docs/guidlines.txt`
