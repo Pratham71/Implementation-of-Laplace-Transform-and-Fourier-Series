@@ -1,136 +1,156 @@
 # Implementation of Laplace Transform and Fourier Series
 
-Mathematics III assignment project by Pratham Nagpal.
+A Mathematics III web application that demonstrates two course topics through a working FastAPI backend and an interactive browser frontend.
 
 ## Student Details
+
 - Name: Pratham Nagpal
 - ID: 2024A7PS0071U
 - Section: L4
 - Instructor: Dr. Soma Sundaram
 
-## Project Overview
-This project implements two Mathematics III applications:
+## What This Project Does
 
-1. Laplace Transform -> Spring-Mass-Damper System
-2. Fourier Series -> Signal Representation for Audio Compression
+This project implements two applied mathematics demonstrations:
 
-The project includes:
-- a FastAPI backend
-- a browser-based frontend served from the same app
-- interactive graph generation
-- graph download buttons for report use
-- Markdown documentation and a final PDF report
+1. **Laplace Transform Application:** a spring-mass-damper vibration system governed by `m y'' + c y' + k y = F(t)`.
+2. **Fourier Series Application:** reconstruction of `f(x)=x` on `[-pi, pi]` using a finite Fourier sine series.
 
-## Features
-- `GET /api/applications/laplace`
-  - Returns the learning content for the spring-mass-damper model.
-- `GET /api/applications/laplace/simulate`
-  - Generates time-domain data for displacement, velocity, forcing, and ODE residual error analysis.
-- `GET /api/applications/fourier`
-  - Returns the learning content for Fourier-series-based signal decomposition.
-- `GET /api/applications/fourier/signal`
-  - Generates original signal, approximation, visible Fourier coefficients, pointwise absolute error, and summary error metrics.
-- Frontend at `/`
-  - Shows both applications in one page.
-  - Supports parameter input for simulation.
-  - Shows error analysis for both graphs.
-  - Shows visible Fourier coefficient values for `a0`, `an`, and `bn`.
-  - Plots Fourier coefficient values for `a_n` and `b_n` against term index `n`, updating the plot when the selected number of terms changes.
-  - Shows an axis guide explaining what the x-axis, y-axis, and point index mean.
-  - Shows a color legend identifying which wave is displacement, force, original signal, and approximation.
-  - Lets you download the rendered graphs as PNG files.
-- Report generator
-  - Produces the final assignment PDF in `docs/2024A7PS0071U.pdf`.
+The goal is to connect the manual Mathematics III theory with actual numerical computation and graph-based interpretation.
+
+## Main Features
+
+- FastAPI backend with typed JSON endpoints for both applications.
+- Static frontend built with HTML, CSS, and vanilla JavaScript.
+- Laplace simulation for displacement, velocity, and applied force.
+- Laplace damping classification using `zeta = c / (2*sqrt(m*k))`.
+- Visible damping regimes: underdamped, critically damped, and overdamped.
+- Fourier approximation graph comparing the original signal and reconstructed signal.
+- Fourier coefficient table showing `a0`, `a_n`, `b_n`, and the retained sine terms.
+- Fourier coefficient plot that updates when the selected number of terms changes.
+- Error analysis for both mathematical models.
+- Axis guides and legends so downloaded graphs are report-ready.
+- PNG download buttons for the generated graphs.
+- Automated tests for API contracts and frontend hooks.
 
 ## Tech Stack
+
 - Python 3.12
 - FastAPI
+- Pydantic
 - NumPy
 - SciPy
-- ReportLab
-- Vanilla HTML, CSS, and JavaScript
+- Uvicorn
+- Pytest
+- HTML
+- CSS
+- Vanilla JavaScript
+- SVG charts
 
 ## Project Structure
+
 ```text
 app/
   main.py
   routes/
+    applications.py
   schemas/
+    applications.py
   services/
+    applications_service.py
   static/
-
-docs/
-  2024A7PS0071U.pdf
-  final_assignment_report.md
-  guidlines.txt
-  manual_solution_report.md
-  real_world_applications_plan.md
-  real_world_applications_prd.md
+    index.html
+    styles.css
+    app.js
 
 tests/
   test_applications.py
-
-tools/
-  generate_assignment_report_pdf.py
 
 requirements.txt
 README.md
 ```
 
-## Setup
-Create and activate a virtual environment, then install dependencies:
+## API Endpoints
+
+- `GET /api/applications/laplace`
+  - Returns explanation content for the spring-mass-damper Laplace application.
+- `GET /api/applications/laplace/simulate`
+  - Returns chart-ready simulation data, ODE residual error metrics, and damping classification.
+- `GET /api/applications/fourier`
+  - Returns explanation content for the Fourier series application.
+- `GET /api/applications/fourier/signal`
+  - Returns original signal data, Fourier approximation data, coefficient values, and approximation error metrics.
+
+## How To Run
+
+Create a virtual environment:
 
 ```powershell
 python -m venv .venv
+```
+
+Activate it:
+
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-## Run The Application
-Start the FastAPI development server:
+Start the FastAPI server:
 
 ```powershell
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
-Open:
-- `http://127.0.0.1:8000/` for the frontend
-- `http://127.0.0.1:8000/docs` for the API docs
+Open the app:
 
-## Tests
-Run the automated test suite with:
+```text
+http://127.0.0.1:8000/
+```
+
+Open the API docs:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## How To Use The App
+
+In the Laplace section, change the mass `m`, damping coefficient `c`, spring constant `k`, and force amplitude, then run the simulation. The app updates the graph, error analysis, and damping type.
+
+In the Fourier section, change the number of terms `n` and update the approximation. The app updates the reconstructed wave, the coefficient table, and the coefficient plot.
+
+Use the download buttons to save the graphs as PNG images for a report or presentation.
+
+## Run Tests
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider tests/test_applications.py
 ```
 
-## Regenerate The Final PDF
-If you update the final report source or the generated output logic, rebuild the PDF with:
-
-```powershell
-.\.venv\Scripts\python.exe tools\generate_assignment_report_pdf.py
-```
-
-The generated file is:
-- `docs/2024A7PS0071U.pdf`
-
-## Included Documentation
-- `docs/real_world_applications_prd.md`
-  - Expanded project requirements document.
-- `docs/real_world_applications_plan.md`
-  - Implementation plan for the project.
-- `docs/manual_solution_report.md`
-  - Manual derivation notes for both selected topics.
-- `docs/final_assignment_report.md`
-  - Polished final report source.
-- `docs/references.md`
-  - Consolidated bibliography that can be pasted into the assignment report.
-- `docs/2024A7PS0071U.pdf`
-  - Submission-ready PDF report.
-- `docs/guidlines.txt`
-  - Assignment instructions provided for the report structure.
-
 ## Notes
-- This project runs through Python and FastAPI. There is no `npm run dev` workflow in this repository.
-- The graph download buttons are intended to help capture report-ready visuals directly from the frontend.
-- The final PDF already includes derived explanation, results, code excerpts, and generated graphs.
+
+- This is a Python/FastAPI project, so there is no `npm run dev` workflow.
+- The frontend is served directly by FastAPI from `app/static`.
+- The `/docs` URL refers to FastAPI's generated API documentation, not a project folder.
+- The project is intentionally lightweight: no database, no authentication, and no separate frontend build step.
+
+## References
+
+1. Simmons, G. F. *Differential Equations with Applications and Historical Notes*, 2nd ed., McGraw-Hill, 1991.
+2. Braun, M. *Differential Equations and Their Applications: An Introduction to Applied Mathematics*, 4th ed., Springer, 1993.
+3. Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., et al. "SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python." *Nature Methods*, vol. 17, 2020, pp. 261-272. https://doi.org/10.1038/s41592-019-0686-2
+4. Oliphant, T. E. *A Guide to NumPy*. Trelgol Publishing, 2006.
+5. SciPy Developers. "scipy.integrate.solve_ivp." *SciPy API Reference*. https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html
+6. NumPy Developers. *NumPy Documentation*. https://numpy.org/doc/stable/
+7. Python Software Foundation. *Python 3 Documentation*. https://docs.python.org/3/
+8. FastAPI. *FastAPI Documentation*. https://fastapi.tiangolo.com/
+9. Pydantic. *Pydantic Documentation*. https://docs.pydantic.dev/latest/
+10. Uvicorn. *Uvicorn Documentation*. https://www.uvicorn.org/
+11. pytest Development Team. *pytest Documentation*. https://docs.pytest.org/en/stable/
+12. MDN Web Docs. "SVG: Scalable Vector Graphics." https://developer.mozilla.org/en-US/docs/Web/SVG
